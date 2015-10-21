@@ -1,4 +1,4 @@
-import com.sun.tools.doclint.HtmlTag;
+//import com.sun.tools.doclint.HtmlTag;
 import javafx.collections.transformation.TransformationList;
 
 import java.util.*;
@@ -14,13 +14,13 @@ public class BCNF {
 
         while (powerset.hasNext()) {
             AttributeSet attrSet = powerset.next();
-            AttributeSet closure = closure3(new AttributeSet(attrSet), functionalDependencies).intersection(attributeSet);
+            AttributeSet closure = closure4(new AttributeSet(attrSet), functionalDependencies).intersection(attributeSet);
 
             if (!closure.equals(attributeSet) && !closure.equals(attrSet) && closure.size() > 0) {
                 Set<AttributeSet> left = decompose(closure, functionalDependencies);  // recursively
-                AttributeSet temp = attributeSet.difference(closure);
-                temp.addAll(attrSet);
-                Set<AttributeSet> right = decompose(temp, functionalDependencies);    // recursively
+                AttributeSet complement = attributeSet.difference(closure);
+                complement.addAll(attrSet);
+                Set<AttributeSet> right = decompose(complement, functionalDependencies);    // recursively
                 left.addAll(right);
                 return left;
             }

@@ -1,9 +1,7 @@
 import org.junit.Test;
-import sun.jvm.hotspot.utilities.Assert;
+//import sun.jvm.hotspot.utilities.Assert;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -66,14 +64,17 @@ public class BCNFTest {
         s.addAttribute(c);
 
         Iterator<AttributeSet> iter = s.powerSet();
+//        List<AttributeSet> res = new ArrayList<>();
         int count = 0;
         while (iter.hasNext()) {
             iter.next();
+//            res.add(iter.next());
             count++;
         }
         assertEquals(8, count);
     }
 
+    @Test
     public void testCorrectAssumptions() {
         //test attribute create and equals
         Attribute a = new Attribute("a");
@@ -117,6 +118,7 @@ public class BCNFTest {
         assertTrue(seenB);
     }
 
+    @Test
     public void testNoDecompositionBCNF() {
         //a,b,c,d
         // no FD's
@@ -156,6 +158,7 @@ public class BCNFTest {
             assertTrue(seen[i]);
     }
 
+    @Test
     public void testUniqueDecompositionBCNF() {
         //a,b,c,d
         //a->b
@@ -176,6 +179,7 @@ public class BCNFTest {
         Set<AttributeSet> res = BCNF.decompose(attrs, fds);
 
         assertEquals(2, res.size());
+
 
         for(AttributeSet as : res) {
             Iterator<Attribute> iter = as.iterator();
@@ -208,6 +212,7 @@ public class BCNFTest {
         }
     }
 
+    @Test
     public void testRecursionBCNF() {
         //a,b,c,d
         //a -> b, c -> d
@@ -236,6 +241,7 @@ public class BCNFTest {
 
     }
 
+    @Test
     public void testTransitivityBCNF() {
         //0,1,2,3,4,5,6,7,8,9
         //i->(i+1) all i < 7
@@ -262,6 +268,7 @@ public class BCNFTest {
         assertTrue(BCNF.isCorrect(attrs, fds));
     }
 
+    @Test
     public void testComplexClosureBCNF() {
         //a,b,c,d
         //a -> x, x -> b
@@ -290,6 +297,7 @@ public class BCNFTest {
         assertTrue(BCNF.isCorrect(attrs, fds));
     }
 
+    @Test
     public void testComplexBCNF() {
         //c0,c1,c2,c3,c4,c5,c6,c7,c8,c9
         //c0 -> c1,c2

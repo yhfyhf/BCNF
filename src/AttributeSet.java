@@ -80,7 +80,10 @@ public class AttributeSet {
      * Returns an Iterator that iterates the power set of attributes.
      */
     public Iterator<AttributeSet> powerSet() {
-        List<List<Attribute>> res = new ArrayList<>();
+        /**
+         * Using DFS does not work because it is not ordered.
+         */
+        /*List<List<Attribute>> res = new ArrayList<>();
         powerSet(_attributes, 0, new ArrayList<>(), res);
         return new Iterator<AttributeSet>() {
             private int cur = 0;
@@ -96,12 +99,33 @@ public class AttributeSet {
                 ret._attributes.addAll(res.get(cur++).stream().collect(Collectors.toList()));
                 return ret;
             }
+        };*/
+        return new Iterator<AttributeSet>() {
+            private long current = 0, size = (1L << (_attributes.size()));
+
+            public boolean hasNext() {
+                return current < size;
+            }
+
+            public AttributeSet next() {
+                // Uses bit manipulation.
+                // {}, {0}, {1}, {0, 1}......
+                AttributeSet ret = new AttributeSet();
+                for (int i = 0; i < _attributes.size(); i++) {
+                    if (((1L << i) & current) != 0) {
+                        ret._attributes.add(_attributes.get(i));
+                    }
+                }
+                current++;
+                return ret;
+            }
         };
     }
 
     /**
      * Helper function for powerSet that recursively add elements to power set.
      */
+    @Deprecated
     private void powerSet(List<Attribute> attributes, int index, List<Attribute> cur, List<List<Attribute>> res) {
         if (index == attributes.size()) {
             res.add(new ArrayList<>(cur));
