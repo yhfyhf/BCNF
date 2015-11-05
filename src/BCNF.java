@@ -1,6 +1,3 @@
-//import com.sun.tools.doclint.HtmlTag;
-import javafx.collections.transformation.TransformationList;
-
 import java.util.*;
 
 public class BCNF {
@@ -17,12 +14,12 @@ public class BCNF {
             AttributeSet closure = closure4(new AttributeSet(attrSet), functionalDependencies).intersection(attributeSet);
 
             if (!closure.equals(attributeSet) && !closure.equals(attrSet) && closure.size() > 0) {
-                Set<AttributeSet> left = decompose(closure, functionalDependencies);  // recursively
+                Set<AttributeSet> left = decompose(closure, functionalDependencies);       // recursively
                 AttributeSet complement = attributeSet.difference(closure);
                 complement.addAll(attrSet);
-                Set<AttributeSet> right = decompose(complement, functionalDependencies);    // recursively
-                left.addAll(right);
-                return left;
+                Set<AttributeSet> right = decompose(complement, functionalDependencies);   // recursively
+                right.addAll(left);
+                return right;
             }
 
         }
@@ -149,7 +146,7 @@ public class BCNF {
                 for (FunctionalDependency fd : list.get(attr)) {
                     count.put(fd, count.get(fd) - 1);
                     if (count.get(fd) == 0) {
-                        List<Attribute> add = new ArrayList(fd.dependent().getAttributes());
+                        List<Attribute> add = new ArrayList<>(fd.dependent().getAttributes());
                         add.removeAll(newDep);
                         newDep.addAll(add);
                         update.addAll(add);
